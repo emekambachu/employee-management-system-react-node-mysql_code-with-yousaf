@@ -1,6 +1,6 @@
 .login-page{
     background: url(images/login-bg.jpg) no-repeat center;
-    background-size: 100% 120%;
+    background-size: cover;
 }
 
 .login-form{
