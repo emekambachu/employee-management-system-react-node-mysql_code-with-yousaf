@@ -9,6 +9,8 @@ export const AdminLogin = () => {
         password: ""
     });
 
+    const [errors, setErrors] = useState([]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setValues(prevValues => ({
@@ -18,10 +20,14 @@ export const AdminLogin = () => {
     };
 
     const navigate = useNavigate();
+    axios.defaults.withCredentials = true;
 
     const submitLogin = (e) => {
         e.preventDefault();
         console.log('Form values:', values);
+
+        // empty errors array
+        setErrors(() => []);
 
         axios.post('http://localhost:5000/api/admin/login', values, {
             headers: {
@@ -32,11 +38,19 @@ export const AdminLogin = () => {
             if(response.data.success) {
                 console.log('Login successful:', response.data);
                 navigate('/admin/dashboard');
+
+            }else{
+                console.log('Login failed:', response.data);
+                setErrors(errors => [
+                    ...errors, response.data.error_message
+                ]);
             }
 
         }).catch(error => {
             console.error('Login failed:', error);
         });
+
+        console.log('Errors:', errors);
     };
 
     return (
@@ -44,6 +58,18 @@ export const AdminLogin = () => {
             <div className="d-flex justify-content-center align-items-center vh-100 login-page row">
                 <div className="p-3 rounded border login-form col-md-3 col-10">
                     <h1>Login Page</h1>
+
+                    {/* Display errors if any */}
+                    {errors.length > 0 && (
+                        <div className="text-center">
+                            {errors.map((error, index) => (
+                                <p className="text-danger" key={index}>
+                                    {error}
+                                </p>
+                            ))}
+                        </div>
+                    )}
+
                     <form onSubmit={submitLogin}>
                         <div className="mb-2">
                             <label htmlFor="email">Email: </label>
@@ -77,6 +103,7 @@ export const AdminLogin = () => {
                             <input className="me-2" type="checkbox" name="remember" id="remember" />
                         </div>
                     </form>
+
                 </div>
             </div>
         </>
