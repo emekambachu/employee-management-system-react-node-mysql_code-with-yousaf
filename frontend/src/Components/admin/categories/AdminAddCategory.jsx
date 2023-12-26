@@ -63,7 +63,9 @@ export const AdminAddCategory = () => {
                     {/* Display success message if formSubmitted is true */}
                     {formSubmitted && (
                         <div className="text-center">
-                            <p className="text-success">Category Added!</p>
+                            <p className="text-success bg-white p-1 rounded-1">
+                                Category Added!
+                            </p>
                         </div>
                     )}
 
