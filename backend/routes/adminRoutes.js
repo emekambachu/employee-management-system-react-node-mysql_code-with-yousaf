@@ -1,5 +1,7 @@
 import express from 'express';
 const router = express.Router();
+import multer from "multer";
+import path from "path";
 
 // controllers
 import {
@@ -12,7 +14,23 @@ import {
     getCategories
 } from "../controllers/admin/admin-category-controller.js";
 
-router.post("/admin/employee/add", addEmployee);
+// Multer for file uploading
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "public/uploads/employees/photos");
+    },
+    filename: (req, file, cb) => {
+        // get original filename without extension and join it with date and extension
+        cb(null, file.originalname.split('.')[0] + "_" + Date.now() + path.extname(file.originalname));
+    }
+});
+
+// Multer middleware
+const upload = multer({
+    storage: storage
+});
+
+router.post("/admin/employee/add", upload.single('image'), addEmployee);
 router.get('/admin/employees', getEmployees);
 
 router.post("/admin/category/add", addCategory);
