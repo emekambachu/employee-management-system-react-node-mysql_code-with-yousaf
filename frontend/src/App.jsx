@@ -7,10 +7,12 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {AdminLogin} from "./Components/admin/auth/AdminLogin.jsx";
 import {AdminDashboard} from "./Components/admin/AdminDashboard.jsx";
 import {AdminHome} from "./Components/admin/AdminHome.jsx";
-import {AdminEmployee} from "./Components/admin/AdminEmployee.jsx";
-import {AdminCategory} from "./Components/admin/AdminCategory.jsx";
+import {AdminEmployee} from "./Components/admin/employees/AdminEmployee.jsx";
+import {AdminCategory} from "./Components/admin/categories/AdminCategory.jsx";
 import {AdminProfile} from "./Components/admin/AdminProfile.jsx";
-import {AdminAddCategory} from "./Components/admin/AdminAddCategory.jsx";
+import {AdminAddCategory} from "./Components/admin/categories/AdminAddCategory.jsx";
+import {AdminAddEmployee} from "./Components/admin/employees/AdminAddEmployee.jsx";
+import {AdminEditEmployee} from "./Components/admin/employees/AdminEditEmployee.jsx";
 
 function App() {
 
@@ -29,7 +31,15 @@ function App() {
                        element={<AdminEmployee/>}
                    ></Route>
                    <Route
-                       path='/admin/category'
+                       path='/admin/employee/add'
+                       element={<AdminAddEmployee/>}
+                   ></Route>
+                   <Route
+                       path='/admin/employee/:id/edit'
+                       element={<AdminEditEmployee/>}
+                   ></Route>
+                   <Route
+                       path='/admin/categories'
                        element={<AdminCategory/>}
                    ></Route>
                    <Route

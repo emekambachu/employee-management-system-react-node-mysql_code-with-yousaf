@@ -6,6 +6,7 @@ import axios from "axios";
 export const AdminEmployee = () => {
 
     const [employees, setEmployees] = useState([]);
+    const baseUrl = import.meta.env.VITE_BASE_URL;
 
     useEffect(() => {
         axios.get('http://localhost:5000/api/admin/employees')
@@ -37,28 +38,50 @@ export const AdminEmployee = () => {
                     <thead className="">
                     <tr>
                         <th>SN</th>
-                        <th>Name</th>
+                        <th>Bio</th>
+                        <th>Image</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     {
-                        employees.length > 0 && employees.map((employer, index) => (
+                        employees.length > 0 ? (
+                        employees.map((employee, index) => (
                             <tr key={index}>
                                 <td>{index + 1}</td>
-                                <td>{`${employer.first_name} ${employer.last_name}`}</td>
                                 <td>
-                                    {/*<Link*/}
-                                    {/*    to={`/admin/category/edit/${category._id}`}*/}
-                                    {/*    className="btn btn-primary"*/}
-                                    {/*    >Edit</Link>*/}
-                                    {/*<button*/}
-                                    {/*    className="btn btn-danger"*/}
-                                    {/*    onClick={() => deleteCategory(category._id)}*/}
-                                    {/*    >Delete</button>*/}
+                                    Name: {`${employee.first_name} ${employee.last_name}`}<br/>
+                                    Email: {employee.email}<br/>
+                                    Mobile: {employee.mobile}<br/>
+                                    Address: {employee.address}<br/>
+                                    DOB: {employee.dob}<br/>
+                                    Salary: {employee.salary}
+                                </td>
+                                <td>
+                                    <img
+                                        className="w-50 rounded-2"
+                                        src={`${baseUrl}/uploads/employees/photos/${employee.image}`}
+                                    />
+                                </td>
+                                <td>
+                                    <Link to={`/admin/employee/${employee.id}/edit`}>
+                                        <button className="btn btn-warning mb-1">
+                                            Edit
+                                        </button>
+                                    </Link>
+                                    <button className="btn btn-danger">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         ))
+                        ) : (
+                            <tr>
+                                <td colSpan="3" className="text-center">
+                                    No employees available.
+                                </td>
+                            </tr>
+                        )
                     }
                     </tbody>
                 </table>

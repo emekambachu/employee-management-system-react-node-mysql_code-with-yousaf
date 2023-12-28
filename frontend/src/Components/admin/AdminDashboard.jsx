@@ -41,11 +41,11 @@ export const AdminDashboard = () => {
 
                             <li className="w-100">
                                 <Link
-                                    to="/admin/category"
+                                    to="/admin/categories"
                                     className="nav-link px-0 align-middle text-white">
                                     <i className="fs-4 bi-columns ms-2"></i>
                                     <span className="ms-2 d-none d-sm-inline">
-                                        Category
+                                        Categories
                                     </span>
                                 </Link>
                             </li>

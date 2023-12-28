@@ -1,10 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
-export const AdminAddEmployee = () => {
+export const AdminEditEmployee = () => {
 
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const {id} = useParams();
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -12,6 +14,37 @@ export const AdminAddEmployee = () => {
             .then(response => {
                 if(response.data.success) {
                     setCategories(response.data.categories);
+                }else{
+                    console.log(response.data.message);
+                }
+
+            }).catch(error => console.log(error));
+
+        axios.get('http://localhost:5000/api/admin/employee/' + id)
+            .then(response => {
+                if(response.data.success) {
+                    console.log(response.data.employee[0]);
+
+                    const data = response.data.employee[0];
+                    // Iterate over the properties of employeeData and update the values state
+                    Object.keys(data).forEach(key => {
+                        setValues(prevValues => ({
+                            ...prevValues,
+                            [key]: data[key],
+                        }));
+                    });
+
+                    // setValues({
+                    //     ...values,
+                    //     first_name: response.data.employee[0].first_name,
+                    //     last_name: response.data.employee[0].last_name,
+                    //     email: response.data.employee[0].email,
+                    //     mobile: response.data.employee[0].mobile,
+                    //     address: response.data.employee[0].address,
+                    //     dob: response.data.employee[0].dob,
+                    //     salary: response.data.employee[0].salary,
+                    //     category_id: response.data.employee[0].category_id
+                    // });
                 }else{
                     console.log(response.data.message);
                 }
@@ -84,7 +117,7 @@ export const AdminAddEmployee = () => {
     return (
         <>
             <div className="d-flex justify-content-center align-items-center row">
-                <h4 className="mt-3 ml-2">Add Employee</h4>
+                <h4 className="mt-3 ml-2">Edit Employee</h4>
                 <div className="p-3 mt-4 rounded border login-form col-md-4 col-10">
 
                     {/* Display errors if any */}
@@ -224,9 +257,9 @@ export const AdminAddEmployee = () => {
                                 <option value="">Select Category</option>
                                 {
                                     categories.length > 0 && categories.map((category, index) => {
-                                     return <option key={index} value={category.id}>
-                                                {category.name}
-                                            </option>
+                                        return <option key={index} value={category.id}>
+                                            {category.name}
+                                        </option>
                                     })
                                 }
                             </select>
@@ -239,6 +272,10 @@ export const AdminAddEmployee = () => {
                                 name="image"
                                 className="form-control rounded-0"
                                 onChange={handleChange}
+                            />
+                            <img
+                                src={`${baseUrl}/uploads/employees/photos/${values.image}`}
+                                className="w-50 rounded-0 mx-auto d-block mt-1"
                             />
                         </div>
 
