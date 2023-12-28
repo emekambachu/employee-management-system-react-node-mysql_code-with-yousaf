@@ -6,7 +6,9 @@ import path from "path";
 // controllers
 import {
     getEmployees,
-    addEmployee
+    addEmployee,
+    getEmployee,
+    updateEmployee, deleteEmployee
 } from '../controllers/admin/admin-employee-controller.js';
 
 import {
@@ -32,6 +34,9 @@ const upload = multer({
 
 router.post("/admin/employee/add", upload.single('image'), addEmployee);
 router.get('/admin/employees', getEmployees);
+router.get('/admin/employee/:id', getEmployee);
+router.put('/admin/employee/:id/update', upload.single('image'), updateEmployee);
+router.delete('/admin/employees/:id/delete', deleteEmployee);
 
 router.post("/admin/category/add", addCategory);
 router.get('/admin/categories', getCategories);
