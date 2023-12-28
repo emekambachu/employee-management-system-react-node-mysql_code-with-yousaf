@@ -5,11 +5,12 @@ import {useNavigate, useParams} from "react-router-dom";
 
 export const AdminEditEmployee = () => {
 
-    const baseUrl = import.meta.env.VITE_BASE_URL;
+    // const baseUrl = import.meta.env.VITE_BASE_URL;
     const {id} = useParams();
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
+        // Get categories
         axios.get('http://localhost:5000/api/admin/categories')
             .then(response => {
                 if(response.data.success) {
@@ -20,6 +21,7 @@ export const AdminEditEmployee = () => {
 
             }).catch(error => console.log(error));
 
+        // Get employee by id
         axios.get('http://localhost:5000/api/admin/employee/' + id)
             .then(response => {
                 if(response.data.success) {
@@ -27,24 +29,16 @@ export const AdminEditEmployee = () => {
 
                     const data = response.data.employee[0];
                     // Iterate over the properties of employeeData and update the values state
+                    const ignoreProperties = ['id', 'password', 'image', 'created_at', 'updated_at'];
                     Object.keys(data).forEach(key => {
-                        setValues(prevValues => ({
-                            ...prevValues,
-                            [key]: data[key],
-                        }));
+                        if( !ignoreProperties.includes(key) ) {
+                            setValues(prevValues => ({
+                                ...prevValues,
+                                [key]: data[key],
+                            }));
+                        }
                     });
 
-                    // setValues({
-                    //     ...values,
-                    //     first_name: response.data.employee[0].first_name,
-                    //     last_name: response.data.employee[0].last_name,
-                    //     email: response.data.employee[0].email,
-                    //     mobile: response.data.employee[0].mobile,
-                    //     address: response.data.employee[0].address,
-                    //     dob: response.data.employee[0].dob,
-                    //     salary: response.data.employee[0].salary,
-                    //     category_id: response.data.employee[0].category_id
-                    // });
                 }else{
                     console.log(response.data.message);
                 }
@@ -80,24 +74,27 @@ export const AdminEditEmployee = () => {
         }
     };
 
-    const addEmployee = (e) => {
+    const updateEmployee = (e) => {
+
         e.preventDefault();
         console.log('Form values:', values);
         // empty errors array
         setErrors([]);
-
         const formData = new FormData();
         // Iterate over properties and append to FormData
         Object.entries(values).forEach(([key, value]) => {
-            formData.append(key, value);
+            if(value !== "" || value !== null) {
+                formData.append(key, value);
+            }
         });
 
         console.log('Form data:', formData);
 
-        axios.post('http://localhost:5000/api/admin/employee/add', formData, {
-            headers: {
-                'content-type': 'multipart/form-data',
-            }
+        axios.put(
+            `http://localhost:5000/api/admin/employee/${id}/update`, formData, {
+                headers: {
+                    'content-type': 'multipart/form-data',
+                }
         }).then(response => {
             if (response.data.success) {
                 console.log('Added:', response.data);
@@ -140,7 +137,7 @@ export const AdminEditEmployee = () => {
                         </div>
                     )}
 
-                    <form onSubmit={addEmployee}>
+                    <form onSubmit={updateEmployee}>
 
                         <div className="mb-2">
                             <label htmlFor="first_name">First Name: </label>
@@ -194,18 +191,18 @@ export const AdminEditEmployee = () => {
                             />
                         </div>
 
-                        <div className="mb-2">
-                            <label htmlFor="password">Password: </label>
-                            <input
-                                type="password"
-                                name="password"
-                                value={values.password}
-                                autoComplete="off"
-                                placeholder="Enter password"
-                                className="form-control rounded-0"
-                                onChange={handleChange}
-                            />
-                        </div>
+                        {/*<div className="mb-2">*/}
+                        {/*    <label htmlFor="password">Password: </label>*/}
+                        {/*    <input*/}
+                        {/*        type="password"*/}
+                        {/*        name="password"*/}
+                        {/*        value={values.password}*/}
+                        {/*        autoComplete="off"*/}
+                        {/*        placeholder="Enter password"*/}
+                        {/*        className="form-control rounded-0"*/}
+                        {/*        onChange={handleChange}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
 
                         <div className="mb-2">
                             <label htmlFor="address">Address: </label>
@@ -265,24 +262,24 @@ export const AdminEditEmployee = () => {
                             </select>
                         </div>
 
-                        <div className="mb-2">
-                            <label htmlFor="image">Image: </label>
-                            <input
-                                type="file"
-                                name="image"
-                                className="form-control rounded-0"
-                                onChange={handleChange}
-                            />
-                            <img
-                                src={`${baseUrl}/uploads/employees/photos/${values.image}`}
-                                className="w-50 rounded-0 mx-auto d-block mt-1"
-                            />
-                        </div>
+                        {/*<div className="mb-2">*/}
+                        {/*    <label htmlFor="image">Image: </label>*/}
+                        {/*    <input*/}
+                        {/*        type="file"*/}
+                        {/*        name="image"*/}
+                        {/*        className="form-control rounded-0"*/}
+                        {/*        onChange={handleChange}*/}
+                        {/*    />*/}
+                        {/*    <img*/}
+                        {/*        src={`${baseUrl}/uploads/employees/photos/${values.image}`}*/}
+                        {/*        className="w-50 rounded-0 mx-auto d-block mt-1"*/}
+                        {/*    />*/}
+                        {/*</div>*/}
 
                         <button
                             type="submit"
                             className="btn btn-primary rounded-0 mb-2 w-50 mx-auto d-block"
-                        >Add</button>
+                        >Update</button>
 
                     </form>
                 </div>
