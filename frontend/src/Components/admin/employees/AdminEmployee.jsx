@@ -21,11 +21,13 @@ export const AdminEmployee = () => {
 
     }, []);
 
-    const deleteEmployee = (e) => {
+    const deleteEmployee = (id, image) => {
 
-        e.preventDefault();
-        axios.delete(`http://localhost:5000/api/admin/employees/${id}/delete`)
-          .then(response => {
+        axios.delete(`http://localhost:5000/api/admin/employees/${id}/delete`, {
+            params: {
+                image: image
+            }
+        }).then(response => {
                 if(response.data.success) {
                     setEmployees(employees.filter(employee => employee.id !== id));
                 }else{
@@ -85,7 +87,7 @@ export const AdminEmployee = () => {
                                         </button>
                                     </Link>
                                     <button
-                                        onClick={() => deleteEmployee(employee.id)}
+                                        onClick={() => deleteEmployee(employee.id, employee.image)}
                                         className="btn btn-danger">
                                         Delete
                                     </button>

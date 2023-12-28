@@ -13,6 +13,7 @@ import {AdminProfile} from "./Components/admin/AdminProfile.jsx";
 import {AdminAddCategory} from "./Components/admin/categories/AdminAddCategory.jsx";
 import {AdminAddEmployee} from "./Components/admin/employees/AdminAddEmployee.jsx";
 import {AdminEditEmployee} from "./Components/admin/employees/AdminEditEmployee.jsx";
+import {AdminEdit} from "./Components/admin/admin/AdminEdit.jsx";
 
 function App() {
 
@@ -49,6 +50,10 @@ function App() {
                    <Route
                        path='/admin/profile'
                        element={<AdminProfile/>}
+                   ></Route>
+                   <Route
+                       path='/admin/:id/edit'
+                       element={<AdminEdit/>}
                    ></Route>
                </Route>
            </Routes>

@@ -40,7 +40,7 @@ export const adminEmployeesCount = (req, res) => {
 }
 
 export const adminSalariesCount = (req, res) => {
-    const sql = "SELECT COUNT(id) AS total FROM salaries";
+    const sql = "SELECT SUM(salary) AS total FROM employees";
     con.query(sql, (err, result) => {
         if (err) {
             console.error("Query Error:", err);
