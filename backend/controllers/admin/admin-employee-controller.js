@@ -3,6 +3,60 @@ import dateService from "../../services/dateService.js";
 import fileManagementService from "../../services/fileManagementService.js";
 import con from "../../utils/db.js";
 
+export const adminCount = (req, res) => {
+    const sql = "SELECT COUNT(id) AS total FROM admins";
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.error("Query Error:", err);
+            return res.json({
+                success: false,
+                message: "Query Error: " + err
+            });
+        }
+
+        return res.json({
+            success: true,
+            total_admin: result[0].total
+        });
+    });
+}
+
+export const adminEmployeesCount = (req, res) => {
+    const sql = "SELECT COUNT(id) AS total FROM employees";
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.error("Query Error:", err);
+            return res.json({
+                success: false,
+                message: "Query Error: " + err
+            });
+        }
+
+        return res.json({
+            success: true,
+            total_employees: result[0].total
+        });
+    });
+}
+
+export const adminSalariesCount = (req, res) => {
+    const sql = "SELECT COUNT(id) AS total FROM salaries";
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.error("Query Error:", err);
+            return res.json({
+                success: false,
+                message: "Query Error: " + err
+            });
+        }
+
+        return res.json({
+            success: true,
+            total_salaries: result[0].total
+        });
+    });
+}
+
 export const getEmployees = (req, res) => {
     const sql = "SELECT * FROM employees";
     con.query(sql, (err, result) => {
