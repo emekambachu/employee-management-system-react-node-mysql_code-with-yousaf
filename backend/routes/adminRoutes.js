@@ -1,9 +1,20 @@
 import express from 'express';
-const router = express.Router();
 import multer from "multer";
 import path from "path";
+const router = express.Router();
 
 // controllers
+import {
+    getAdmins,
+
+} from '../controllers/admin/adminController.js';
+
+import {
+    adminLogout,
+    adminLogin,
+
+} from '../controllers/admin/adminAuthController.js';
+
 import {
     getEmployees,
     addEmployee,
@@ -14,12 +25,12 @@ import {
     adminEmployeesCount,
     adminSalariesCount,
 
-} from '../controllers/admin/admin-employee-controller.js';
+} from '../controllers/admin/adminEmployeeController.js';
 
 import {
     addCategory,
     getCategories
-} from "../controllers/admin/admin-category-controller.js";
+} from "../controllers/admin/adminCategoryController.js";
 
 // Multer for file uploading
 const storage = multer.diskStorage({
@@ -41,6 +52,8 @@ router.get('/admin/count', adminCount);
 router.get('/admin/employees/count', adminEmployeesCount);
 router.get('/admin/salaries/count', adminSalariesCount);
 
+router.get('/admin/all', getAdmins);
+
 router.post("/admin/employee/add", upload.single('image'), addEmployee);
 router.get('/admin/employees', getEmployees);
 router.get('/admin/employee/:id', getEmployee);
@@ -49,5 +62,9 @@ router.delete('/admin/employees/:id/delete', deleteEmployee);
 
 router.post("/admin/category/add", addCategory);
 router.get('/admin/categories', getCategories);
+
+// Auth
+router.post('/admin/logout', adminLogout);
+router.post('/admin/login', adminLogin);
 
 export default router;
