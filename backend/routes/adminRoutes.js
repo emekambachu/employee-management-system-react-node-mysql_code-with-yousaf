@@ -65,6 +65,11 @@ router.get('/admin/categories', getCategories);
 
 // Auth
 router.post('/admin/logout', adminLogout);
-router.post('/admin/login', adminLogin);
+
+const {
+    loginValidation,
+} = require('../middlewares/validators/auth/loginValidation');
+
+router.post('/admin/login', loginValidation, adminLogin);
 
 export default router;
