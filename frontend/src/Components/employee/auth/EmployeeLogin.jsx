@@ -1,8 +1,8 @@
 import {useState} from "react";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
-export const AdminLogin = () => {
+export const EmployeeLogin = () => {
 
     const [values, setValues] = useState({
         email: "",
@@ -29,14 +29,14 @@ export const AdminLogin = () => {
         // empty errors array
         setErrors(() => []);
 
-        axios.post('http://localhost:5000/api/admin/login', values, {
+        axios.post('http://localhost:5000/api/employee/login', values, {
             headers: {
                 'Content-Type': 'application/json'
             }
 
         }).then(response => {
             if(response.data.success) {
-                navigate('/admin/dashboard');
+                navigate('/employee/dashboard');
 
             }else{
                 if(response.data.validation_errors){
@@ -73,7 +73,10 @@ export const AdminLogin = () => {
         <>
             <div className="d-flex justify-content-center align-items-center vh-100 login-page row">
                 <div className="p-3 rounded border login-form col-md-3 col-10">
-                    <h1>Login Page</h1>
+                    <Link
+                        className="text-center d-block text-decoration-none text-bg-info rounded-2 mb-2" to="/home"
+                    >Home</Link>
+                    <h3 className="text-center">Employee Login</h3>
 
                     {/* Display errors if any */}
                     {errors.length > 0 && (
@@ -112,11 +115,19 @@ export const AdminLogin = () => {
                             />
                         </div>
 
-                        <button type="submit" className="btn btn-primary rounded-0 mb-2 w-25">Login</button>
+                        <button
+                            type="submit"
+                            className="btn btn-primary rounded-0 mb-2 w-25"
+                        >Login</button>
 
                         <div className="mb-3">
                             <label htmlFor="remember">Remember me:</label>
-                            <input className="me-2" type="checkbox" name="remember" id="remember" />
+                            <input
+                                className="me-2"
+                                type="checkbox"
+                                name="remember"
+                                id="remember"
+                            />
                         </div>
                     </form>
 

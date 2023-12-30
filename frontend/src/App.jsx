@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
+import {Home} from "./Components/home/Home.jsx";
+
 import {AdminLogin} from "./Components/admin/auth/AdminLogin.jsx";
 import {AdminDashboard} from "./Components/admin/AdminDashboard.jsx";
 import {AdminHome} from "./Components/admin/AdminHome.jsx";
@@ -15,13 +17,17 @@ import {AdminAddEmployee} from "./Components/admin/employees/AdminAddEmployee.js
 import {AdminEditEmployee} from "./Components/admin/employees/AdminEditEmployee.jsx";
 import {AdminEdit} from "./Components/admin/admin/AdminEdit.jsx";
 
+import {EmployeeLogin} from "./Components/employee/auth/EmployeeLogin.jsx";
+
 function App() {
 
   return (
     <>
        <BrowserRouter>
            <Routes>
+               <Route path="/home" element={<Home/>}></Route>
                <Route path="/admin/login" element={<AdminLogin/>}></Route>
+               <Route path="/employee/login" element={<EmployeeLogin/>}></Route>
                <Route path="/admin" element={<AdminDashboard/>}>
                    <Route
                        path='/admin/dashboard'

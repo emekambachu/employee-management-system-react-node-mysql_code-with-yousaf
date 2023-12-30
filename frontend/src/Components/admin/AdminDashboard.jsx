@@ -1,9 +1,25 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import {Link, Outlet} from "react-router-dom";
+import {Link, Outlet, useNavigate} from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import axios from "axios";
 
 export const AdminDashboard = () => {
+
+    const navigate = useNavigate();
+    axios.defaults.withCredentials = true;
+
+    const logout = () => {
+        axios.post('http://localhost:5000/api/admin/logout')
+            .then(response => {
+                if(response.data.success) {
+                    navigate("/admin/login");
+                }else{
+                    console.log(response.data.message);
+                }
+            }).catch(error => console.log(error));
+    }
+
     return (
         <div className="container-fluid">
             <div className="row flex-nowrap">
@@ -59,14 +75,12 @@ export const AdminDashboard = () => {
                                 </Link>
                             </li>
 
-                            <li className="w-100">
-                                <Link
-                                    to="/admin/logout"
+                            <li className="w-100" onClick={logout}>
+                                <Link to=""
                                     className="nav-link px-0 align-middle text-white">
                                     <i className="fs-4 bi-box-arrow-right ms-2"></i>
                                     <span className="ms-2 d-none d-sm-inline">Logout</span>
                                 </Link>
-
                             </li>
 
                         </ul>
