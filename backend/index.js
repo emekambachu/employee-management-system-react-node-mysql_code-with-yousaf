@@ -4,7 +4,9 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 
+// Routes
 import adminRoutes from './routes/adminRoutes';
+import employeeRoutes from "./routes/employeeRoutes";
 
 dotenv.config();
 
@@ -25,7 +27,10 @@ app.use(morgan('dev'));
 app.use(express.static('public'));
 
 // Routes
-app.use('/api', adminRoutes);
+app.use('/api', [
+        adminRoutes,
+        employeeRoutes,
+    ]);
 
 const server = app.listen(PORT, () => {
     console.log(

@@ -156,45 +156,52 @@ export const updateEmployee = (req, res) => {
 
 export const addEmployee = (req, res) => {
 
-    console.log("filename", req.file.filename);
-
-    // Validate the request body here
-    const hashedPassword = bcrypt.hash(req.body.password, 10);
+    // Validate the request body here;
     const created_at = dateService.getTimeStamp();
     const updated_at = dateService.getTimeStamp();
 
     const sql = "INSERT INTO employees (first_name, last_name, email, mobile, password, address, dob, salary, category_id, image, created_at, updated_at) VALUES (?)";
 
-    const values = [
-        req.body.first_name,
-        req.body.last_name,
-        req.body.email,
-        req.body.mobile,
-        hashedPassword,
-        req.body.address,
-        req.body.dob,
-        req.body.salary,
-        req.body.category_id,
-        req.file.filename,
-        created_at,
-        updated_at
-    ];
-
-    con.query(sql, [values], (err, result) => {
-        if (err) {
-            console.error("Query Error:", err);
+    bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
+        if(err) {
             return res.json({
                 success: false,
-                message: "Query Error: " + err,
+                message: "Server Error: " + err
             });
         }
 
-        return res.json({
-            success: true,
-            message: "Employee Added",
-            employee: values,
+        const values = [
+            req.body.first_name,
+            req.body.last_name,
+            req.body.email,
+            req.body.mobile,
+            hashedPassword,
+            req.body.address,
+            req.body.dob,
+            req.body.salary,
+            req.body.category_id,
+            req.file.filename,
+            created_at,
+            updated_at
+        ];
+
+        con.query(sql, [values], (err, result) => {
+            if (err) {
+                console.error("Query Error:", err);
+                return res.json({
+                    success: false,
+                    server_error: "Server Error: " + err,
+                });
+            }
+
+            return res.json({
+                success: true,
+                message: "Employee Added",
+                employee: values,
+            });
         });
     });
+
 }
 
 export const deleteEmployee = (req, res) => {
