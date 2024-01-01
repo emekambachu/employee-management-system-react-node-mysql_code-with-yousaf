@@ -2,7 +2,12 @@ import './App.css';
 import '../src/styles/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    useNavigate
+} from "react-router-dom";
 
 import {Home} from "./Components/home/Home.jsx";
 
@@ -18,16 +23,40 @@ import {AdminEditEmployee} from "./Components/admin/employees/AdminEditEmployee.
 import {AdminEdit} from "./Components/admin/admin/AdminEdit.jsx";
 
 import {EmployeeLogin} from "./Components/employee/auth/EmployeeLogin.jsx";
+import {EmployeeDashboard} from "./Components/employee/EmployeeDashboard.jsx";
+import {EmployeeHome} from "./Components/employee/EmployeeHome.jsx";
+import {EmployeeDetail} from "./Components/employee/EmployeeDetail.jsx";
+import axios from "axios";
+import {useEffect} from "react";
 
 function App() {
+
+  const navigate = useNavigate();
+  const baseApi = import.meta.env.VITE_BASE_API;
+  axios.defaults.withCredentials = true;
+
+  useEffect(() => {
+      axios.get(`${baseApi}/verify/user`).then(response => {
+          if(response.data.success) {
+              if(response.data.role === "admin") {
+                  navigate("/admin/dashboard");
+              }else{
+                  navigate("/employee/dashboard");
+              }
+          }else{
+              navigate("/");
+          }
+      })
+  })
 
   return (
     <>
        <BrowserRouter>
            <Routes>
-               <Route path="/home" element={<Home/>}></Route>
+               <Route path="/" element={<Home/>}></Route>
                <Route path="/admin/login" element={<AdminLogin/>}></Route>
                <Route path="/employee/login" element={<EmployeeLogin/>}></Route>
+
                <Route path="/admin" element={<AdminDashboard/>}>
                    <Route
                        path='/admin/dashboard'
@@ -62,6 +91,18 @@ function App() {
                        element={<AdminEdit/>}
                    ></Route>
                </Route>
+
+               <Route path="/employee" element={<EmployeeDashboard/>}>
+                   <Route
+                       path='/employee/dashboard'
+                       element={<EmployeeHome/>}
+                   ></Route>
+                   <Route
+                       path='/employee/:id/detail'
+                       element={<EmployeeDetail/>}
+                   ></Route>
+               </Route>
+
            </Routes>
        </BrowserRouter>
     </>

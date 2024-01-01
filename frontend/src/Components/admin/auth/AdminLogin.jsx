@@ -73,7 +73,7 @@ export const AdminLogin = () => {
         <>
             <div className="d-flex justify-content-center align-items-center vh-100 login-page row">
                 <div className="p-3 rounded border login-form col-md-3 col-10">
-                    <h1>Login Page</h1>
+                    <h3 class="text-center">Admin Login Page</h3>
 
                     {/* Display errors if any */}
                     {errors.length > 0 && (

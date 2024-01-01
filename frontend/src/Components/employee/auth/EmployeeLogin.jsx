@@ -36,7 +36,7 @@ export const EmployeeLogin = () => {
 
         }).then(response => {
             if(response.data.success) {
-                navigate('/employee/dashboard');
+                navigate(`/employee/${response.data.id}/detail`);
 
             }else{
                 if(response.data.validation_errors){
