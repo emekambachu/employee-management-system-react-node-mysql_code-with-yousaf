@@ -21,6 +21,7 @@ export const EmployeeLogin = () => {
 
     const navigate = useNavigate();
     axios.defaults.withCredentials = true;
+    const baseApi = import.meta.env.VITE_BASE_API;
 
     const submitLogin = (e) => {
         e.preventDefault();
@@ -29,7 +30,7 @@ export const EmployeeLogin = () => {
         // empty errors array
         setErrors(() => []);
 
-        axios.post('http://localhost:5000/api/employee/login', values, {
+        axios.post(`${baseApi}/employee/login`, values, {
             headers: {
                 'Content-Type': 'application/json'
             }

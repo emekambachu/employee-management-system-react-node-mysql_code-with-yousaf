@@ -26,28 +26,8 @@ import {EmployeeLogin} from "./Components/employee/auth/EmployeeLogin.jsx";
 import {EmployeeDashboard} from "./Components/employee/EmployeeDashboard.jsx";
 import {EmployeeHome} from "./Components/employee/EmployeeHome.jsx";
 import {EmployeeDetail} from "./Components/employee/EmployeeDetail.jsx";
-import axios from "axios";
-import {useEffect} from "react";
 
 function App() {
-
-  const navigate = useNavigate();
-  const baseApi = import.meta.env.VITE_BASE_API;
-  axios.defaults.withCredentials = true;
-
-  useEffect(() => {
-      axios.get(`${baseApi}/verify/user`).then(response => {
-          if(response.data.success) {
-              if(response.data.role === "admin") {
-                  navigate("/admin/dashboard");
-              }else{
-                  navigate("/employee/dashboard");
-              }
-          }else{
-              navigate("/");
-          }
-      })
-  })
 
   return (
     <>

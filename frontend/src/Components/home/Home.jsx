@@ -1,7 +1,25 @@
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import {useEffect} from "react";
 
 export const Home = () => {
     const navigate = useNavigate();
+    const baseApi = import.meta.env.VITE_BASE_API;
+    axios.defaults.withCredentials = true;
+
+    useEffect(() => {
+        axios.get(`${baseApi}/verify/user`).then(response => {
+            if(response.data.success) {
+                if(response.data.role === "admin") {
+                    navigate("/admin/dashboard");
+                }else{
+                    navigate("/employee/dashboard");
+                }
+            }else{
+                navigate("/");
+            }
+        })
+    })
 
     return (
         <>
